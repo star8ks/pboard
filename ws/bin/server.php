@@ -7,6 +7,10 @@ use PbApp\PBoard;
 
 require dirname(__DIR__).'/vendor/autoload.php';
 
+$port = 8989;
+
+echo 'Start a WampServer on port '.$port."...\n";
+
 $loop = React\EventLoop\Factory::create();
 $pusher = new PBoard();
 
@@ -20,7 +24,7 @@ $pull->on('message', array($pusher, 'broadcastBoardData'));
 // Set up our Websocket server for clients wanting realtime updates
 $webSock = new React\Socket\Server($loop);
 // Binding to 0.0.0.0 means remotes can connect
-$webSock->listen(8989, '0.0.0.0');
+$webSock->listen($port, '0.0.0.0');
 $webServer = new Ioserver(
 	new HttpServer(
 		new WsServer(
@@ -37,7 +41,7 @@ $loop->run();
 <script src="http://autobahn.s3.amazonaws.com/js/autobahn.min.js"></script>
 <script>
 	var conn = new ab.Session(
-		'ws://localhost:8080' // The host (our Ratchet WebSocket server) to  connect to
+		'ws://domain:port' // The host (our Ratchet WebSocket server) to  connect to
 	  , function() {            // Once the connection has been established
 			conn.subscribe('kittensCategory', function(topic, data) {
 				// This is where you would add the new article to the DOM ( beyond the scope of this tutorial)

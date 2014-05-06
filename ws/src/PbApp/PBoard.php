@@ -50,6 +50,7 @@ class PBoard implements WampServerInterface
 	}
 
 	public function onOpen(ConnectionInterface $conn) {
+		$this->log('[open]A client connected.Session id: '.$conn->WAMP->sessionId);
 	}
 
 	public function onClose(ConnectionInterface $conn) {
